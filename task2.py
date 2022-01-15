@@ -4,7 +4,7 @@ from Crypto.Cipher import AES, ARC4
 aes_key = bytes(b'\xFF') * 16
 aes_iv = bytes(b'\xFF') * 16
 ctr_counter = Counter.new(128)
-data = "ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"
+data = b"ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"
 
 
 ecb_cipher = AES.new(aes_key, AES.MODE_ECB)
@@ -57,6 +57,12 @@ def flip_first_bit(encrypted_data):
 	return bytes.fromhex(hex(encrypted_data[0] ^ 128)[2:].upper()) + encrypted_data[1:]
 
 print("\n--------------------------------------------------------------------------------------------------------------------------------\n")
+
+ecb_cipher = AES.new(aes_key, AES.MODE_ECB)
+cbc_cipher = AES.new(aes_key, AES.MODE_CBC, aes_iv)
+cfb_cipher = AES.new(aes_key, AES.MODE_CFB, aes_iv)
+ofb_cipher = AES.new(aes_key, AES.MODE_OFB, aes_iv)
+ctr_cipher = AES.new(aes_key, AES.MODE_CTR, counter=ctr_counter)
 
 print("DECRYPTED (with flipped bit in encrypted data)")
 print("ECB:", ecb_cipher.decrypt(flip_first_bit(ecb_encrypted_data)))
